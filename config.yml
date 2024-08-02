@@ -1,0 +1,89 @@
+config:
+  target: 'http://localhost:8080'
+  phases:
+    - duration: 60
+      arrivalRate: 1000
+scenarios:
+  - flow:
+      - post:
+          url: "/api/auth/user/test"
+          json: {
+            "tienda": {
+              "id": "tienda123",
+              "nombre": "MegaTiendaOnline",
+              "fundadaEn": 2010,
+              "activa": true,
+              "calificacion": 4.5,
+              "ubicacion": {
+                "pais": "Argentina",
+                "ciudad": "Buenos Aires",
+                "codigoPostal": "C1000",
+                "coordenadas": {
+                  "latitud": -34.603722,
+                  "longitud": -58.381592
+                }
+              },
+              "contacto": {
+                "email": "contacto@megatiendaonline.com",
+                "telefono": "+54 11 1234-5678"
+              }
+            },
+            "inventario": {
+              "totalProductos": 1500,
+              "categorias": [
+                {
+                  "id": "cat-electro",
+                  "nombre": "Electrónica",
+                  "subcategorias": [
+                    {
+                      "id": "subcat-moviles",
+                      "nombre": "Móviles",
+                      "productos": [
+                        {
+                          "id": "prod1",
+                          "nombre": "Smartphone XYZ",
+                          "marca": "Marca A",
+                          "precio": 500,
+                          "descuento": 0.1,
+                          "stock": 100,
+                          "caracteristicas": {
+                            "pantalla": "6.5 pulgadas",
+                            "procesador": "Octa-core",
+                            "ram": "4GB",
+                            "almacenamiento": "128GB"
+                          },
+                          "coloresDisponibles": ["Negro", "Blanco"]
+                        },
+                        {
+                          "id": "prod2",
+                          "nombre": "Smartphone ABC",
+                          "marca": "Marca B",
+                          "precio": 700,
+                          "descuento": 0.2,
+                          "stock": 50,
+                          "caracteristicas": {
+                            "pantalla": "6.1 pulgadas",
+                            "procesador": "Hexa-core",
+                            "ram": "6GB",
+                            "almacenamiento": "256GB"
+                          },
+                          "coloresDisponibles": ["Rojo", "Azul"]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "clientes": {
+              "id": "cliente123",
+              "nombre": "Juan Perez",
+              "email": "juan.perez@example.com",
+              "fechaRegistro": "2022-01-15T00:00:00.000Z"
+            },
+            "estadisticas": {
+              "tasaDeConversion": 0.15,
+              "promedioValorCarrito": 250
+            }
+          }
+

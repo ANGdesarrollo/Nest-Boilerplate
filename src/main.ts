@@ -3,17 +3,18 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
-import { AppModule } from './app.module';
+import { AppModule } from './AppModule';
 import { ValidationPipe } from '@nestjs/common';
-import FastifyCookie from '@fastify/cookie';
+import fastifyCookie from '@fastify/cookie';
+import { ConfigService } from '@nestjs/config';
 
-async function bootstrap() {
+void (async () => {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter()
+    new FastifyAdapter(),
   );
 
-  app.setGlobalPrefix("api");
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -21,14 +22,18 @@ async function bootstrap() {
     }),
   );
 
-  await app.register(FastifyCookie, {
-    secret: 'my-secret',
-    parseOptions: {}
-  })
+  const configService = app.get(ConfigService);
 
-
+  await app.register(fastifyCookie, {
+    secret: configService.get('NODE_COOKIE_SECRET'),
+    parseOptions: {
+      secure: configService.get('NODE_ENV') === 'PRODUCTION',
+      signed: true,
+      httpOnly: true,
+      maxAge: configService.get('NODE_COOKIE_EXPIRES_IN'),
+      path: '/',
+    },
+  });
 
   await app.listen(8080);
-}
-
-bootstrap();
+})();
